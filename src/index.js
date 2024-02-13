@@ -4,8 +4,12 @@ const bodyParser = require("body-parser");
 const { PORT } = require("./config/serverConfig");
 // const TicketService = require("./services/ticket-service");
 // const job = require("./utils/job");
-const { createChannel } = require("./utils/messageQueues");
+const { createChannel, subscribeMessage } = require("./utils/messageQueues");
+const { REMINDER_BINDING_KEY } = require("./config/serverConfig");
+const { TicketService } = require("./services/index");
 const apiRoutes = require("./routes/index");
+
+const ticketService = new TicketService();
 
 const setupAndStartServer = async () => {
     const app = express();
@@ -13,7 +17,8 @@ const setupAndStartServer = async () => {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
 
-    // const channel = await createChannel();
+    const channel = await createChannel();
+    subscribeMessage(channel, ticketService.subscribeEvents, REMINDER_BINDING_KEY);
 
     // job();
 

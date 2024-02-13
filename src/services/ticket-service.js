@@ -46,6 +46,21 @@ class TicketService {
         }
     }
 
+    subscribeEvents = async (payload) => {
+        let service = payload.service;
+        switch(service) {
+            case "CREATE_TICKET":
+                this.createNotification(payload.data);
+                break;
+            case "SEND_TICKET":
+                this.sendBasicEmail(payload.data);
+                break;
+            default:
+                console.log("No valid event recieved");
+                break;
+        }
+    }
+
 }
 
 module.exports = TicketService;
