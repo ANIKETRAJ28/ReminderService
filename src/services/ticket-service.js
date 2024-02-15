@@ -53,7 +53,7 @@ class TicketService {
                 this.createNotification(payload.data);
                 break;
             case "SEND_TICKET":
-                this.sendBasicEmail(payload.data);
+                this.sendBasicEmail(payload.data.recepientEmail, payload.data.subject, payload.data.content);
                 break;
             default:
                 console.log("No valid event recieved");
